@@ -10,7 +10,21 @@ import "./Register.css";
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const [username,setUserName]=useState("");
+  const [password,setpassword]=useState("");
+  const [confirmpass,setconfirmpass]=useState("");
+  const [isloading,setisloading]=useState(false);
+ 
+  const handlename=(e)=>{
+    setUserName(e.target.value);
+  }
+  const handlepass=(e)=>{
+    setpassword(e.target.value);
+  }
+  const handleconfirmpass=(e)=>{
 
+    setconfirmpass(e.target.value);
+  }
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
   /**
@@ -35,13 +49,64 @@ const Register = () => {
    *      "message": "Username is already taken"
    * }
    */
-  const register = async (formData) => {
+     const formData={
+       "username":username,
+       "password":password,
+       "confirmpass":confirmpass
+       
+     }
+  const register = async () => {
+    setisloading(true);
+    if(validateInput(formData))
+   {     const postData={
+            username:formData.username,
+            password:formData.password
+          }
+
+      await axios.post(`${config.endpoint}/auth/register`,postData).then((response)=>{
+           setisloading(false);
+           enqueueSnackbar("Registered successfully", {variant:"success"});
+         
+      }).catch((error=>{
+        setisloading(false);
+        enqueueSnackbar("Username is already taken",{variant:"error"});
+      }))
+     
+    }
+    else{
+     
+      if(formData.username.length===0 )
+      {    setisloading(false);
+        enqueueSnackbar("Username is a required field");
+      }
+      else if(formData.username.length<6)
+      {  setisloading(false);
+        enqueueSnackbar("Username must be at least 6 characters");
+      }
+      else if(formData.password.length===0)
+      {setisloading(false);
+        enqueueSnackbar("Password is a required field");
+      }
+      else if(formData.password.length<6)
+      {setisloading(false);
+        enqueueSnackbar("Password must be at least 6 characters");
+      }
+      else if(formData.password!==formData.confirmpass)
+      {setisloading(false);
+        enqueueSnackbar("Passwords do not match");
+      }
+    }
+
+    
+        
+      
+
   };
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
   /**
    * Validate the input values so that any bad or illegal values are not passed to the backend.
-   *
+   *  
    * @param {{ username: string, password: string, confirmPassword: string }} data
    *  Object with values of username, password and confirm password user entered to register
    *
@@ -57,7 +122,27 @@ const Register = () => {
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
   const validateInput = (data) => {
+      if(data.username.length===0 ||data.username.length<6)
+        {
+          return false;
+        }
+      else if(data.password.length===0 ||data.password.length<6)
+      {
+        return false;
+      }
+      else if(data.confirmpass.length===0 || data.confirmpass.length<6) 
+      {
+        return false;
+      }
+    else if(data.password!==data.confirmpass)
+    {
+      return false;
+    }
+    return true;
+   
+      
   };
+  
 
   return (
     <Box
@@ -77,6 +162,9 @@ const Register = () => {
             title="Username"
             name="username"
             placeholder="Enter Username"
+             value={username}
+             onChange={(e)=>handlename(e)}
+           
             fullWidth
           />
           <TextField
@@ -88,6 +176,9 @@ const Register = () => {
             helperText="Password must be atleast 6 characters length"
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
+            value={password}
+            onChange={(e)=>handlepass(e)}
+           
           />
           <TextField
             id="confirmPassword"
@@ -96,10 +187,13 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             fullWidth
-          />
-           <Button className="button" variant="contained">
+            value={confirmpass}
+            onChange={(e)=>handleconfirmpass(e)}
+           
+          />{isloading?<CircularProgress />:
+           <Button className="button" variant="contained" onClick={register} >
             Register Now
-           </Button>
+           </Button>}
           <p className="secondary-action">
             Already have an account?{" "}
              <a className="link" href="#">
