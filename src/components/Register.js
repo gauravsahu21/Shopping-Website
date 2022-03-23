@@ -7,13 +7,14 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-
+import { useHistory, Link } from "react-router-dom";
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [username,setUserName]=useState("");
   const [password,setpassword]=useState("");
   const [confirmpass,setconfirmpass]=useState("");
   const [isloading,setisloading]=useState(false);
+  const history=useHistory();
  
   const handlename=(e)=>{
     setUserName(e.target.value);
@@ -66,6 +67,7 @@ const Register = () => {
       await axios.post(`${config.endpoint}/auth/register`,postData).then((response)=>{
            setisloading(false);
            enqueueSnackbar("Registered successfully", {variant:"success"});
+           history.push("/login", { from: "register" })
          
       }).catch((error=>{
         setisloading(false);
@@ -191,14 +193,14 @@ const Register = () => {
             onChange={(e)=>handleconfirmpass(e)}
            
           />{isloading?<CircularProgress />:
-           <Button className="button" variant="contained" onClick={register} >
-            Register Now
+          <Button className="button" variant="contained" onClick={register} >
+               Register Now
            </Button>}
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
+            <Link to="/login" className="link">
               Login here
-             </a>
+              </Link>
           </p>
         </Stack>
       </Box>
