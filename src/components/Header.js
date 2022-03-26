@@ -5,61 +5,45 @@ import React from "react";
 import "./Header.css";
 import { useHistory, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-const Header = ({ children, hasHiddenAuthButtons }) => {
-   //const [isloged,setisloged]=useState(false);
+import {
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import { Search, SentimentDissatisfied } from "@mui/icons-material";
+const Header = (props) => {
+  
   
   const history=useHistory();
-  // const name=localStorage.getItem("username");
-  // useEffect(()=>{
-  //   if(name!==null)
-  //     {
-  //       setisloged(true);
-  //     }
-  //    else
-  //    {
-  //      setisloged(false);
-  //    } 
-  //    return isloged;
-  // })
+  
  const handleLogout=(e)=>{
   localStorage.clear();
 
   window.location.reload();
 
-   console.log("logout");
  }
-//  const Loged=()=>{
-//    if(localStorage.getItem("token")!==null)
-//    {  
-//      return (<Stack direction="row" spacing={2} alignItems="center">
-//      <img src="avatar.png" alt="gaurav"></img>
-//         <p>{localStorage.getItem("username")}</p>
-//          <Button
-//            className="explore-button"
-//            variant="text"
-//            onClick={handleLogout}
-//          >
-//          logout</Button></Stack>)
-//    }
-//    else {
-//      return (<Stack direction="row" spacing={2}><Button
-//      className="explore-button"
-//      variant="text"
-//      onClick={()=>history.push("/login")}
-//    >
-//    LOGIN</Button><Button 
-//    className="button" variant="contained" 
-//    onClick={()=>history.push("/register")} >
-//           REGISTER
-//       </Button></Stack>)
-//    }
-//  }
 
     return (
       <Box className="header">
         <Box className="header-title">
             <img src="logo_light.svg" alt="QKart-icon"></img>
         </Box>
+        <Box>{props.children &&<TextField
+        className="search-desktop"
+        size="small"
+        fullWidth
+         value={props.name}
+          onChange={(e)=>props.handle(e,props.time)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Search color="primary" />
+            </InputAdornment>
+          ),
+        }}
+        placeholder="Search for items/categories"
+        name="search"
+      /> }</Box>
+       <Box>
         {localStorage.getItem("token")!==null?<Stack direction="row" spacing={2} alignItems="center">
     <img src="avatar.png" alt={localStorage.getItem("username")}></img>
        <p>{localStorage.getItem("username")}</p>
@@ -68,7 +52,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
           variant="text"
           onClick={handleLogout}
         >
-        logout</Button></Stack> :hasHiddenAuthButtons?<Button
+        logout</Button></Stack> :props.hasHiddenAuthButtons?<Button
           className="explore-button"
           startIcon={<ArrowBackIcon />}
           variant="text"
@@ -85,7 +69,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
         onClick={()=>history.push("/register")} >
                REGISTER
            </Button></Stack>}
-      </Box>
+      </Box></Box>
     );
 };
 
