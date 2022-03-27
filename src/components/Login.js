@@ -62,7 +62,7 @@ const Login = () => {
           {enqueueSnackbar("Logged in successfully");
           history.push("/", { from: "login" });
           persistLogin(res.data.token,res.data.username,res.data.balance);
-          window.location.reload();
+         // window.location.reload();
         }
           setloading(false);
         
