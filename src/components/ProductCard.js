@@ -30,7 +30,7 @@ const ProductCard = (props) => {
         <Rating name="read-only" value={props.cart.rating} readOnly />
       </CardContent>
       <CardActions>
-      <Button className="button" variant="contained" style={{width:"400px"}}>
+      <Button className="button" variant="contained" style={{width:"400px"}} onClick={()=>props.handleaddToCart(props.cart._id)}>
      <AddShoppingCartOutlined/> ADD TO CART
            </Button>
         
