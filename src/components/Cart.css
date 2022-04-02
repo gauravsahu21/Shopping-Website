@@ -1,9 +1,14 @@
 .cart {
     background-color:#E9F5E1;
+    
     border-radius: 4px;
     margin: 0.5rem;
 }
-
+.car1{
+    background-color:#E9F5E1;
+    border-radius: 4px;
+    margin:0.5rem;
+}
 .empty {
     display: flex;
     flex-direction: column;

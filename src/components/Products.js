@@ -407,7 +407,7 @@ const Products = () => {
           </Grid>
       </Grid>
       <Grid item  md={3}>
-           <Cart products={product}  items={cartItem} handlequantity={handlequantity}/>
+           <Cart   isReadOnly={false} products={product}  items={cartItem} handlequantity={handlequantity}/>
          </Grid>
   </Grid>
      :<Grid container spacing={2}>

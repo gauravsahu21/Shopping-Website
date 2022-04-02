@@ -17,7 +17,7 @@ const Header = (props) => {
   
  const handleLogout=(e)=>{
   localStorage.clear();
-
+  history.push("/");
   window.location.reload();
 
  }
