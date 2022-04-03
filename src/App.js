@@ -8,7 +8,7 @@ import Thanks from "./components/Thanks";
 import { ThemeProvider } from "@mui/system";
 import theme from "./theme";
 export const config = {
-  endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  endpoint: `https://qkart-gaurav-frontend.herokuapp.com/api/v1`,
 };
 
 function App() {
